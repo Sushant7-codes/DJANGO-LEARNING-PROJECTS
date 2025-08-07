@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+    {{ demo|default:"This is default value" }}
+
+
+    <h1>POSTS</h1> <a href="{% url 'home' %}">Home</a>
+
+    <ul>
+        {% for post in data %}
+        <li>
+            <h2>{{ post.title }} 
+                {% if user_role == "admin" %}
+                |
+                <a href="">Edit</a>
+                <a href="">Delete</a>
+
+                {% elif user_role == "staff" %}
+                |
+                <a href="">Edit</a>
+
+                {% else %}
+                | <a href=""> Comment</a>
+                | <a href=""> Share</a>
+
+                {% endif %}
+            </h2>   
+            <p>{{ post.caption }} </p>
+            <ul>
+                 <p>TAGS</p>
+                {% for tag in post.tags %}
+               
+                    {{ tag|title }}
+                    
+                    
+                    | 
+                
+                {% endfor %}
+            </ul>
+        </li>
+        {% empty %}
+        <p>No posts yet</p>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

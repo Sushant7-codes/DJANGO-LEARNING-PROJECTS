@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Student Register{% endblock title %}
+
+{% block content %}
+<main class="flex-grow p-6 overflow-auto">
+    <h1 class="text-3xl font-bold mb-6">Student Registration</h1>
+
+    <form class="w-1/2 flex flex-col gap-4" method="post" action="">
+        {% csrf_token %}
+
+        {% include 'app/components/basic-card.html' %}
+        
+        <button class="btn btn-primary "> Submit</button>
+    </form>
+</main>
+
+{% endblock content %}

@@ -1,0 +1,432 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Shopping Cart - Sushant Sports{% endblock %}
+
+{% block content %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+        color: white;
+        padding: 3rem 0;
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .cart-section {
+        padding: 4rem 0;
+    }
+
+    .cart-container {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .cart-items {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .item-image {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .item-details {
+        flex: 1;
+    }
+
+    .item-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .item-category {
+        color: #667eea;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+
+    .item-price {
+        font-size: 1.2rem;
+        color: #27ae60;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .quantity-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: background 0.3s ease;
+    }
+
+    .quantity-btn:hover {
+        background: #5a67d8;
+    }
+
+    .quantity-display {
+        background: #f8f9fa;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        min-width: 40px;
+        text-align: center;
+    }
+
+    .remove-btn {
+        background: #ff6b6b;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.3s ease;
+    }
+
+    .remove-btn:hover {
+        background: #ff5252;
+    }
+
+    .cart-summary {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+    }
+
+    .summary-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding: 0.5rem 0;
+    }
+
+    .summary-row.total {
+        border-top: 2px solid #eee;
+        padding-top: 1rem;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #2c3e50;
+    }
+
+    .checkout-btn {
+        width: 100%;
+        background: linear-gradient(45deg, #27ae60, #2ecc71);
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .continue-shopping {
+        width: 100%;
+        background: transparent;
+        color: #667eea;
+        border: 2px solid #667eea;
+        padding: 1rem;
+        border-radius: 15px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .continue-shopping:hover {
+        background: #667eea;
+        color: white;
+    }
+
+    .empty-cart {
+        text-align: center;
+        color: white;
+        padding: 4rem 0;
+    }
+
+    .empty-cart i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-cart h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .empty-cart p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+        .cart-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        .cart-item {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+        
+        .quantity-controls {
+            justify-content: center;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<div class="page-header">
+    <div class="container">
+        <h1>Shopping Cart</h1>
+        <p>Review your items before checkout</p>
+    </div>
+</div>
+
+<div class="cart-section">
+    <div class="container">
+        <div class="cart-container" id="cartContainer">
+            <div class="cart-items">
+                <!-- Sample cart items - replace with Django template loop -->
+                <div class="cart-item">
+                    <div class="item-image">
+                        <i class="fas fa-basketball-ball"></i>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Professional Basketball</div>
+                        <div class="item-category">Basketball</div>
+                        <div class="item-price">$29.99</div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="changeQuantity(this, -1)">-</button>
+                            <div class="quantity-display">2</div>
+                            <button class="quantity-btn" onclick="changeQuantity(this, 1)">+</button>
+                            <button class="remove-btn" onclick="removeItem(this)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cart-item">
+                    <div class="item-image">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Soccer Ball</div>
+                        <div class="item-category">Football</div>
+                        <div class="item-price">$24.99</div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="changeQuantity(this, -1)">-</button>
+                            <div class="quantity-display">1</div>
+                            <button class="quantity-btn" onclick="changeQuantity(this, 1)">+</button>
+                            <button class="remove-btn" onclick="removeItem(this)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cart-item">
+                    <div class="item-image">
+                        <i class="fas fa-tennis-ball"></i>
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">Tennis Racket</div>
+                        <div class="item-category">Tennis</div>
+                        <div class="item-price">$89.99</div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="changeQuantity(this, -1)">-</button>
+                            <div class="quantity-display">1</div>
+                            <button class="quantity-btn" onclick="changeQuantity(this, 1)">+</button>
+                            <button class="remove-btn" onclick="removeItem(this)">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-title">Order Summary</div>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$144.97</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span>$9.99</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax:</span>
+                    <span id="tax">$15.50</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="total">$170.46</span>
+                </div>
+                <button class="checkout-btn" onclick="proceedToCheckout()">
+                    <i class="fas fa-lock"></i> Proceed to Checkout
+                </button>
+                <button class="continue-shopping" onclick="location.href='{% url "products" %}'">
+                    <i class="fas fa-arrow-left"></i> Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function changeQuantity(button, change) {
+        const quantityDisplay = button.parentElement.querySelector('.quantity-display');
+        let currentQuantity = parseInt(quantityDisplay.textContent);
+        let newQuantity = currentQuantity + change;
+        
+        if (newQuantity >= 1) {
+            quantityDisplay.textContent = newQuantity;
+            updateCartTotals();
+        }
+    }
+
+    function removeItem(button) {
+        const cartItem = button.closest('.cart-item');
+        cartItem.style.animation = 'slideOut 0.3s ease-out';
+        
+        setTimeout(() => {
+            cartItem.remove();
+            updateCartTotals();
+            checkEmptyCart();
+        }, 300);
+    }
+
+    function updateCartTotals() {
+        const cartItems = document.querySelectorAll('.cart-item');
+        let subtotal = 0;
+        
+        cartItems.forEach(item => {
+            const price = parseFloat(item.querySelector('.item-price').textContent.replace('$', ''));
+            const quantity = parseInt(item.querySelector('.quantity-display').textContent);
+            subtotal += price * quantity;
+        });
+        
+        const shipping = 9.99;
+        const tax = subtotal * 0.1; // 10% tax
+        const total = subtotal + shipping + tax;
+        
+        document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+        document.getElementById('tax').textContent = '$' + tax.toFixed(2);
+        document.getElementById('total').textContent = '$' + total.toFixed(2);
+    }
+
+    function checkEmptyCart() {
+        const cartItems = document.querySelectorAll('.cart-item');
+        if (cartItems.length === 0) {
+            document.getElementById('cartContainer').innerHTML = `
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h2>Your cart is empty</h2>
+                    <p>Looks like you haven't added any items to your cart yet.</p>
+                    <a href="{% url 'products' %}" class="btn">Start Shopping</a>
+                </div>
+            `;
+        }
+    }
+
+    function proceedToCheckout() {
+        // Add loading state
+        const checkoutBtn = document.querySelector('.checkout-btn');
+        checkoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        
+        // Simulate processing
+        setTimeout(() => {
+            window.location.href = '{% url "checkout" %}';
+        }, 1000);
+    }
+
+    // Add CSS for slide out animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+</script>
+{% endblock %}

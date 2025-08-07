@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Student Register{% endblock title %}
+
+{% block content %}
+<main class="flex-grow p-6 overflow-auto">
+    <h1 class="text-3xl font-bold mb-6">Student Registration</h1>
+    <form method="post" class="max-w-2xl mx-auto">
+        {% csrf_token %}
+        <div class="space-y-6">
+            <div>
+                <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                <input type="text" name="first_name" id="first_name" placeholder="e.g John" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div><br>
+            <div>
+                <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                <input type="text" name="last_name" id="last_name" placeholder="e.g Doe" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div><br>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" name="email" id="email"  placeholder="e.g 3oV0P@example.com" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div><br>
+            <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                <input type="tel" name="phone" id="phone"  placeholder="e.g 1234567890" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div><br>
+            <div>
+                <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Date of Birth</label>
+                <input type="date" name="date_of_birth" id="date_of_birth" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            </div><br>
+            <div>
+                <button type="submit" class="btn btn-primary w-full"> Submit</button>
+            </div>
+        </div>
+    </form>
+</main>
+{% endblock content %}

@@ -1,0 +1,80 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- {% comment %} <h1>Welcome to My Web Page, {{tasks}} </h1>
+    <p>This is a simple paragraph describing the content of the page.</p> {% endcomment %} -->
+
+    <!-- <h1>Here are tasks</h1>
+
+    {% for task in tasks %}
+    <div>
+    <div>Title:{{ task.title }}</div>
+    <div>Desc:{{ task.desc }}</div>
+    </div>
+    {% endfor %}
+</body>
+</html> --> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks Home</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            color: #333;
+        }
+        .task-list {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0;
+        }
+        .task-item {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            margin-bottom: 20px;
+            padding: 20px 24px;
+            transition: box-shadow 0.2s;
+        }
+        .task-item:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+        .task-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 8px;
+        }
+        .task-desc {
+            color: #555;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Here are tasks</h1>
+    <div class="task-list">
+        {% for task in tasks %}
+        <div class="task-item">
+            <div class="task-title">Title: {{ task.title }}</div>
+            <div class="task-desc">Desc: {{ task.desc }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
